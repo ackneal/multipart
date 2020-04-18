@@ -1,0 +1,21 @@
+{
+    "name": "ackneal/multipart",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Multipart\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Multipart\\Tests\\": "tests/"
+        }
+    }
+}
