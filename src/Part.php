@@ -13,9 +13,21 @@ class Part implements MessageInterface
 {
     use MessageTrait;
 
+    private $disposition;
+    private $disposition_params;
+
     public function __construct($message)
     {
         $this->parse($message);
+    }
+
+    public function getFormName(): string
+    {
+        $this->parseContentDisposition();
+        if ($this->disposition !== 'form-data') {
+            return '';
+        }
+        return $this->disposition_params['name'];
     }
 
     private function parse($message): void
@@ -32,5 +44,24 @@ class Part implements MessageInterface
             $headers[$match[1]][] = $match[2];
         }
         $this->setHeaders($headers);
+    }
+
+    private function parseContentDisposition(): void
+    {
+        if (! is_null($this->disposition)) {
+            return;
+        }
+        $expect_params = ['name', 'filename'];
+        $this->disposition = '';
+        $this->disposition_params = array_fill_keys($expect_params, '');
+        $values = $this->getHeader('Content-Disposition');
+        if (count($values) === 0) {
+            return;
+        }
+        $header = current(Psr7\parse_header($values[0]));
+        if ($header !== false and count($header) !== 0) {
+            $this->disposition = array_shift($header);
+            $this->disposition_params = $header + $this->disposition_params;
+        }
     }
 }
