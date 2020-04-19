@@ -73,4 +73,26 @@ Content-Type: application/json; charset=UTF-8
 EOT;
         $this->assertEquals('', (new Part($message))->getFormName());
     }
+
+    public function testGetFileName(): void
+    {
+        $message = <<<EOT
+Content-Disposition: form-data; name="foo"; filename="bar.txt"
+Content-Length: 3
+Content-Type: text/plain
+
+foo
+EOT;
+        $this->assertEquals('bar.txt', (new Part($message))->getFileName());
+    }
+
+    public function testGetFileNameWithoutFilename(): void
+    {
+        $message = <<<EOT
+Content-Disposition: form-data; name="foo";"
+
+foo
+EOT;
+        $this->assertEquals('', (new Part($message))->getFileName());
+    }
 }
