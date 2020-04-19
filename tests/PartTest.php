@@ -49,4 +49,28 @@ EOT;
         $this->assertEquals(['text/plain'], (new Part($message))->getHeader('content-type'));
         $this->assertEquals([], (new Part($message))->getHeader('foo'));
     }
+
+    public function testGetFormName(): void
+    {
+        $message = <<<EOT
+Content-Disposition: form-data; name="foo"; filename="bar.txt"
+Content-Length: 3
+Content-Type: text/plain
+
+foo
+EOT;
+        $this->assertEquals('foo', (new Part($message))->getFormName());
+    }
+
+    public function testGetFormNameWithoutDisposition(): void
+    {
+        $message = <<<EOT
+Content-Type: application/json; charset=UTF-8
+
+{
+  "name": "myObject"
+}
+EOT;
+        $this->assertEquals('', (new Part($message))->getFormName());
+    }
 }
