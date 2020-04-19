@@ -30,6 +30,12 @@ class Part implements MessageInterface
         return $this->disposition_params['name'];
     }
 
+    public function getFileName(): string
+    {
+        $this->parseContentDisposition();
+        return $this->disposition_params['filename'];
+    }
+
     private function parse($message): void
     {
         $section = preg_split("/((?<=\r\n)|(?<=\n))\r?\n/", $message, 2);
