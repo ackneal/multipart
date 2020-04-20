@@ -16,7 +16,7 @@ class Part implements MessageInterface
     private $disposition;
     private $disposition_params;
 
-    public function __construct($message)
+    public function __construct(string $message)
     {
         $this->parse($message);
     }
@@ -36,7 +36,7 @@ class Part implements MessageInterface
         return $this->disposition_params['filename'];
     }
 
-    private function parse($message): void
+    private function parse(string $message): void
     {
         $section = preg_split("/((?<=\r\n)|(?<=\n))\r?\n/", $message, 2);
         if ($section === false || count($section) !== 2) {
