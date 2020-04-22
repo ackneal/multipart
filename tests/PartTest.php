@@ -13,6 +13,17 @@ final class PartTest extends TestCase
         new Part('');
     }
 
+    public function testParseMessageWithoutHeaders(): void
+    {
+        $message = <<<EOT
+
+foo
+EOT;
+        $part = new Part($message);
+        $this->assertEmpty($part->getHeaders());
+        $this->assertEquals('foo', (string) $part->getBody());
+    }
+
     public function testGetBody(): void
     {
         $message = <<<EOT
