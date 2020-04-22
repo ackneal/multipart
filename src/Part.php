@@ -38,7 +38,7 @@ class Part implements MessageInterface
 
     private function parse(string $message): void
     {
-        $section = preg_split("/((?<=\r\n)|(?<=\n))\r?\n/", $message, 2);
+        $section = preg_split("/(^|(?<=\r\n)|(?<=\n))\r?\n/", $message, 2);
         if ($section === false || count($section) !== 2) {
             throw new \InvalidArgumentException('Missing header delimiter');
         }
