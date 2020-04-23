@@ -31,6 +31,27 @@ class Stream implements StreamInterface
         $this->buf = new Psr7\BufferStream($this->hwm);
     }
 
+    public function readPart()
+    {
+        while (($line = $this->readLine()) !== '') {
+            if ($this->isDelimiter($line)) {
+                return $this->resolvePart();
+            }
+            if ($this->isFinalBoundary($line)) {
+                break;
+            }
+        }
+    }
+
+    private function resolvePart()
+    {
+        if ($this->scanUntilBoundary() === 0) {
+            return null;
+        }
+        $message = substr($this->buf->getContents(), 0, -1 * strlen($this->nl));
+        return new Part($message);
+    }
+
     private function scanUntilBoundary()
     {
         $offset = $this->stream->tell();
