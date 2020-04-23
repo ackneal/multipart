@@ -15,6 +15,8 @@ class Stream implements StreamInterface
     private $stream;
     private $nl;
     private $boundary;
+    private $hwm = 4096;
+    private $buf;
 
     public function __construct($resource, string $boundary)
     {
@@ -26,6 +28,26 @@ class Stream implements StreamInterface
             'dashPrefix' => '--' . $boundary,
             'dashEnclose' => '--' . $boundary . '--',
         ];
+        $this->buf = new Psr7\BufferStream($this->hwm);
+    }
+
+    private function scanUntilBoundary()
+    {
+        $offset = $this->stream->tell();
+        while (($line = $this->readLine()) !== '') {
+            if ($this->isDelimiter($line) or $this->isFinalBoundary($line)) {
+                $this->stream->seek($offset + $this->buf->getSize());
+                return $this->buf->getSize();
+            }
+            $this->buf->write($line);
+        }
+        $this->buf->close();
+        return 0;
+    }
+
+    private function readLine()
+    {
+        return Psr7\readLine($this->stream, $this->hwm);
     }
 
     private function isDelimiter(string $line): bool
