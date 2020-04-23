@@ -1,1 +1,1 @@
-# PHP library for multipart
+# Multipart, PHP multipart parsing
