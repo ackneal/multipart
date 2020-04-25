@@ -42,7 +42,7 @@ EOT;
         $this->assertEmpty($parts[0]->getHeaders());
         $this->assertEquals("This is implicitly typed plain ASCII text.\nIt does NOT end with a linebreak.", $parts[0]->getBody()->getContents());
         $this->assertCount(1, $parts[1]->getHeaders());
-        $this->assertEquals(['text/plain; charset=us-ascii'], $parts[1]->getHeader('content-type'));
+        $this->assertEquals('text/plain; charset=us-ascii', $parts[1]->getHeaderLine('content-type'));
         $this->assertEquals("This is explicitly typed plain ASCII text.\nIt DOES end with a linebreak.\n", $parts[1]->getBody()->getContents());
     }
 }
