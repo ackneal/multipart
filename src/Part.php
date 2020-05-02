@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Multipart;
 
 use Psr\Http\Message\MessageInterface;
@@ -16,12 +14,12 @@ class Part implements MessageInterface
     private $disposition;
     private $disposition_params;
 
-    public function __construct(string $message)
+    public function __construct($message)
     {
         $this->parse($message);
     }
 
-    public function getFormName(): string
+    public function getFormName()
     {
         $this->parseContentDisposition();
         if ($this->disposition !== 'form-data') {
@@ -30,13 +28,13 @@ class Part implements MessageInterface
         return $this->disposition_params['name'];
     }
 
-    public function getFileName(): string
+    public function getFileName()
     {
         $this->parseContentDisposition();
         return $this->disposition_params['filename'];
     }
 
-    private function parse(string $message): void
+    private function parse($message)
     {
         $section = preg_split("/(^|(?<=\r\n)|(?<=\n))\r?\n/", $message, 2);
         if ($section === false || count($section) !== 2) {
@@ -52,7 +50,7 @@ class Part implements MessageInterface
         $this->setHeaders($headers);
     }
 
-    private function parseContentDisposition(): void
+    private function parseContentDisposition()
     {
         if (! is_null($this->disposition)) {
             return;

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Multipart;
 
 use Psr\Http\Message\StreamInterface;
@@ -18,7 +16,7 @@ class Stream implements StreamInterface
     private $hwm = 4096;
     private $buf;
 
-    public function __construct($resource, string $boundary)
+    public function __construct($resource, $boundary)
     {
         if (empty($boundary)) {
             throw new \InvalidArgumentException('boundary is empty');
@@ -52,7 +50,7 @@ class Stream implements StreamInterface
         return new Part($message);
     }
 
-    private function scanUntilBoundary(): int
+    private function scanUntilBoundary()
     {
         $offset = $this->stream->tell();
         while (($line = $this->readLine()) !== '') {
@@ -71,7 +69,7 @@ class Stream implements StreamInterface
         return Psr7\readLine($this->stream, $this->hwm);
     }
 
-    private function isDelimiter(string $line): bool
+    private function isDelimiter($line)
     {
         if (strpos($line, $this->boundary['dashPrefix']) !== 0) {
             return false;
@@ -83,7 +81,7 @@ class Stream implements StreamInterface
         return $rest === $this->nl;
     }
 
-    private function isFinalBoundary(string $line): bool
+    private function isFinalBoundary($line)
     {
         if (strpos($line, $this->boundary['dashPrefix']) !== 0) {
             return false;
@@ -92,7 +90,7 @@ class Stream implements StreamInterface
         return strlen($rest) === 0 or $rest === $this->nl;
     }
 
-    private function ltrimLWSP(string $line): string
+    private function ltrimLWSP($line)
     {
         return ltrim($line, " \t");
     }

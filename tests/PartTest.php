@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Multipart\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -9,13 +7,13 @@ use Multipart\Part;
 
 final class PartTest extends TestCase
 {
-    public function testContructParseThrowException(): void
+    public function testContructParseThrowException()
     {
         $this->expectException(\InvalidArgumentException::class);
         new Part('');
     }
 
-    public function testParseMessageWithoutHeaders(): void
+    public function testParseMessageWithoutHeaders()
     {
         $message = <<<EOT
 
@@ -26,7 +24,7 @@ EOT;
         $this->assertEquals('foo', (string) $part->getBody());
     }
 
-    public function testGetBody(): void
+    public function testGetBody()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo"; filename="bar.txt"
@@ -38,7 +36,7 @@ EOT;
         $this->assertEquals('foo', (string) (new Part($message))->getBody());
     }
 
-    public function testHasHeader(): void
+    public function testHasHeader()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo"; filename="bar.txt"
@@ -50,7 +48,7 @@ EOT;
         $this->assertTrue((new Part($message))->hasHeader('content-disposition'));
     }
 
-    public function testGetHeader(): void
+    public function testGetHeader()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo"; filename="bar.txt"
@@ -63,7 +61,7 @@ EOT;
         $this->assertEquals([], (new Part($message))->getHeader('foo'));
     }
 
-    public function testGetFormName(): void
+    public function testGetFormName()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo"; filename="bar.txt"
@@ -75,7 +73,7 @@ EOT;
         $this->assertEquals('foo', (new Part($message))->getFormName());
     }
 
-    public function testGetFormNameWithoutDisposition(): void
+    public function testGetFormNameWithoutDisposition()
     {
         $message = <<<EOT
 Content-Type: application/json; charset=UTF-8
@@ -87,7 +85,7 @@ EOT;
         $this->assertEquals('', (new Part($message))->getFormName());
     }
 
-    public function testGetFileName(): void
+    public function testGetFileName()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo"; filename="bar.txt"
@@ -99,7 +97,7 @@ EOT;
         $this->assertEquals('bar.txt', (new Part($message))->getFileName());
     }
 
-    public function testGetFileNameWithoutFilename(): void
+    public function testGetFileNameWithoutFilename()
     {
         $message = <<<EOT
 Content-Disposition: form-data; name="foo";"

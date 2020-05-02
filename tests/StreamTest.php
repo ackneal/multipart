@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Multipart\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -9,13 +7,13 @@ use Multipart\Stream;
 
 final class StreamTest extends TestCase
 {
-    public function testContructWithInvalidThrowException(): void
+    public function testContructWithInvalidThrowException()
     {
         $this->expectException(\InvalidArgumentException::class);
         new Stream('foo', '');
     }
 
-    public function testSimpleMessage(): void
+    public function testSimpleMessage()
     {
         $message = <<<EOT
 This is the preamble.  It is to be ignored, though it
