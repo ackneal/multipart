@@ -52,7 +52,7 @@ class Stream implements StreamInterface
         return new Part($message);
     }
 
-    private function scanUntilBoundary()
+    private function scanUntilBoundary(): int
     {
         $offset = $this->stream->tell();
         while (($line = $this->readLine()) !== '') {
