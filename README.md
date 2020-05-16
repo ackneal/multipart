@@ -1,6 +1,6 @@
 # Multipart, PHP multipart parsing
 
-[![Build Status](https://travis-ci.com/ackneal/multipart.svg?branch=master)](https://travis-ci.com/github/ackneal/multipart)
+[![Build Status](https://travis-ci.org/ackneal/multipart.svg?branch=master)](https://travis-ci.org/github/ackneal/multipart)
 
 Multipart is PHP MIME multipart parsing that makes it easy to get a single part  in a multipart body.
 
